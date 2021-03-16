@@ -32,11 +32,10 @@ MAIN
 		LET l_arr2[x].fileName = l_rec.arr[x].fileName
 		LET l_arr2[x].data_len = l_rec.arr[x].data_len
 		LOCATE l_arr2[x].data IN MEMORY
-
-		IF l_rec.arr[x].data.getLength() > 0 THEN
-			CALL security.Base64.ToByte(l_rec.arr[x].data, l_arr2[x].data)
+		IF l_rec.arr[x].data.getLength() > 0 THEN -- if we have data then process it.
+			CALL security.Base64.ToByte(l_rec.arr[x].data, l_arr2[x].data) -- decode back to binary
 			DISPLAY SFMT("l_arr2 data length: %1 expecting: %2", LENGTH(l_arr2[x].data), l_arr2[x].data_len)
-			IF LENGTH(l_arr2[x].data) = l_arr2[x].data_len THEN
+			IF LENGTH(l_arr2[x].data) = l_arr2[x].data_len THEN -- check len, if okay then save the data to disk
 				DISPLAY SFMT("Saving file %1", l_arr2[x].fileName)
 				CALL l_arr2[x].data.writeFile(l_arr2[x].fileName)
 			END IF
